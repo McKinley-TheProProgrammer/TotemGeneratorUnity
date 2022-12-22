@@ -22,5 +22,11 @@ namespace TotemEntities.DNA
                 $"human_eye_color: {human_eye_color} | hair_styles: {hair_styles} | " +
                 $"primary_color: {primary_color}";
         }
+        
+        public Color HumanSkinColor => ColorConverter.GetColorByHexCode(human_skin_color);
+        
+        public Color HumanHairColor => ColorConverter.GetColorByHexCode(human_hair_color);
+        
+        public Color HumanEyeColor => ColorConverter.GetColorByHexCode(human_eye_color);
     }
 }
