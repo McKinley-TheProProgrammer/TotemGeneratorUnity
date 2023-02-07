@@ -6,25 +6,18 @@ namespace TotemConsts
 {
     public static class ServicesEnv
     {
-        #region Web3Auth
+        #region Auth
 
-        public const string AccountGatewayUrl = "https://account.totem.gdn/";
+        public const string AuthServiceUrl = "https://auth.totem.gdn/";
         public const string HttpListenerUrl = "http://localhost:6700/auth/";
-        public const string HttpResponseFileName = "HttpResponse";
-        public const string HttpResultParametrName = "result";
-
-        public const string Web3AuthClientId = "BAQ6yarrhApPOJlWKKwyq8hKWitgkASuEKT1cKDz2vf4rvbeh7lPBUhYBHpIIcLIoDIhZxmq0JpW4jqbg6Hqg3o";
-        public const string Web3AuthRedirectUrl = "torusapp://com.torus.Web3AuthUnity/auth";
-        public const string Web3AuthWhiteLabelName = "Web3Auth Totem";
-        public const string Web3AuthWhiteLabeColor = "#123456";
-        public const Web3Auth.Network Web3AuthNetwork = Web3Auth.Network.TESTNET;
-
+        public const string AuthHttpResponseFileName = "HttpResponse";
+        public const string HttpResultParameterName = "token";
 
         #endregion
 
         #region LegacyServices
 
-        public const string LegacyServicesUrl = "https://legacy-api.totem.gdn/";
+        public const string AssetLegacyServicesUrl = "https://api.totem.gdn/asset-legacy";
 
         #endregion
 
@@ -50,6 +43,13 @@ namespace TotemConsts
         public const string SmartContractItems = "0xfC5654489b23379ebE98BaF37ae7017130B45086";
         public const string SmartContractAvatarsFilterName = "totem-common-files/filters/totem-avatar";
         public const string SmartContractItemsFilterName = "totem-common-files/filters/totem-item";
+
+        #endregion
+
+        #region Debug
+
+        public const string AssetsOverrideFilePath = "Totem/totem-assets-override.json";
+
 
         #endregion
     }

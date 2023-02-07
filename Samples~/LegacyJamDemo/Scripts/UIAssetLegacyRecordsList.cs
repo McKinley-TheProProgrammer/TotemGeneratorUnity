@@ -66,7 +66,6 @@ namespace TotemDemo
             GameObject item = Instantiate(itemPrefab);
             item.transform.SetParent(itemsParent);
             item.GetComponent<UIAssetLegacyRecordsListItem>().Setup(record);
-            item.transform.SetSiblingIndex(0);
             if (addToCollection)
             {
                 assetLegacyRecords.Add(record);
@@ -79,7 +78,7 @@ namespace TotemDemo
             nextValue = IncrementLastLegacyRecordData();
             if (nextValue != -1)
             {
-                totemDemo.AddLegacyRecord(selectedAsset, nextValue);
+                totemDemo.AddLegacyRecord(selectedAsset, TotemAssetType.avatar, nextValue);
             }
         }
 
@@ -90,7 +89,7 @@ namespace TotemDemo
                 return 1;
             }
 
-            var lastRecord = assetLegacyRecords.FindLast((x) => x.gameId.Equals(totemDemo._gameId));
+            var lastRecord = assetLegacyRecords.FindLast((x) => x.gameAddress.Equals(totemDemo._gameId));
 
             if (lastRecord == null)
             {
@@ -109,12 +108,12 @@ namespace TotemDemo
             int customInt = 0;
             if (int.TryParse(inputLegacyNumber.text, out customInt))
             {
-                totemDemo.AddLegacyRecord(selectedAsset, customInt);
+                totemDemo.AddLegacyRecord(selectedAsset, TotemAssetType.avatar, customInt);
             }
         }
         public void OnZeroLegacyButtonClick()
         {
-            totemDemo.AddLegacyRecord(selectedAsset, 0);
+            totemDemo.AddLegacyRecord(selectedAsset, TotemAssetType.avatar, 0);
         }
     }
 }

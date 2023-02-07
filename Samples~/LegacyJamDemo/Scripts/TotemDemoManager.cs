@@ -10,6 +10,12 @@ using TMPro;
 
 namespace TotemDemo
 {
+    public class NYJamItem : TotemDNADefaultItem
+    {
+        public string origin;
+    }
+
+
     public class TotemDemoManager : MonoBehaviour
     {
         public static TotemDemoManager Instance;
@@ -72,7 +78,7 @@ namespace TotemDemo
             UILoadingScreen.Instance.Show();
 
             //Login user
-            totemCore.AuthenticateCurrentUser(Provider.GOOGLE, OnUserLoggedIn);
+            totemCore.AuthenticateCurrentUser(OnUserLoggedIn);
         }
 
         private void OnUserLoggedIn(TotemUser user)
@@ -91,7 +97,7 @@ namespace TotemDemo
 
                 //Avatars
                 _userAvatars = avatars;
-                firstAvatar = avatars[0];
+                firstAvatar = avatars.Count > 0 ? avatars[0] : null;
                 //
 
                 //UI Example Methods
@@ -99,12 +105,21 @@ namespace TotemDemo
                 ShowAvatarRecords();
 
             });
+
+            totemCore.GetUserItems<TotemDNADefaultItem>(user, TotemDNAFilter.DefaultItemFilter, (items) =>
+            {
+                Debug.Log("Items:");
+                foreach (var item in items)
+                {
+                    Debug.Log(item.ToString());
+                }
+            });
         }
 
 
         public void ShowAvatarRecords()
         {
-            GetLegacyRecords(firstAvatar, (records) =>
+            GetLegacyRecords(firstAvatar, TotemAssetType.avatar, (records) =>
             {
                 UIAssetLegacyRecordsList.Instance.BuildList(firstAvatar, records);
                 UILoadingScreen.Instance.Hide();
@@ -116,10 +131,10 @@ namespace TotemDemo
         /// <summary>
         /// Add a new Legacy Record to a specific Totem Asset.
         /// </summary>
-        public void AddLegacyRecord(object asset, int data)
+        public void AddLegacyRecord(object asset, TotemAssetType assetType, int data)
         {
             UILoadingScreen.Instance.Show();
-            totemCore.AddLegacyRecord(asset, data.ToString(), (record) =>
+            totemCore.AddLegacyRecord(asset, assetType, data.ToString(), (record) =>
             {
                 legacyRecordsList.AddRecordToList(record, true);
                 UILoadingScreen.Instance.Hide();
@@ -132,17 +147,17 @@ namespace TotemDemo
         /// </summary>
         public void AddLegacyToFirstAvatar(int data)
         {
-            AddLegacyRecord(firstAvatar, data);
+            AddLegacyRecord(firstAvatar, TotemAssetType.avatar, data);
         }
 
-        public void GetLegacyRecords(object asset, UnityAction<List<TotemLegacyRecord>> onSuccess)
+        public void GetLegacyRecords(object asset, TotemAssetType assetType, UnityAction<List<TotemLegacyRecord>> onSuccess)
         {
-            totemCore.GetLegacyRecords(asset, onSuccess, legacyGameIdInput.text);
+            totemCore.GetLegacyRecords(asset, assetType, onSuccess, string.IsNullOrEmpty(legacyGameIdInput.text) ? _gameId : legacyGameIdInput.text);
         }
 
         public void GetLastLegacyRecord(UnityAction<TotemLegacyRecord> onSuccess)
         {
-            GetLegacyRecords(firstAvatar, (records) => { onSuccess.Invoke(records[records.Count - 1]); });
+            GetLegacyRecords(firstAvatar, TotemAssetType.avatar, (records) => { onSuccess.Invoke(records[records.Count - 1]); });
         }
 
         public void CompareLastLegacyRecord()
